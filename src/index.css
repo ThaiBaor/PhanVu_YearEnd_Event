@@ -1,13 +1,71 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
+ .page {
+          min-height: 100vh;
+          position: relative;
+          font-family: Arial, sans-serif;
+        }
+        .background {
+          position: fixed;
+          inset: 0;
+          background: url("https://images.unsplash.com/photo-1521791136064-7986c2920216") center/cover no-repeat;
+          filter: blur(2px) brightness(0.6);
+          z-index: -1;
+        }
+        .container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 40px;
+          color: #fff;
+        }
+        h1 {
+          text-align: center;
+          margin-bottom: 30px;
+        }
+        table {
+          width: 100%;
+          border-collapse: collapse;
+          background: rgba(0,0,0,0.5);
+        }
+        th, td {
+          padding: 12px;
+          border: 1px solid rgba(255,255,255,0.2);
+        }
+        th {
+          background: rgba(255,255,255,0.15);
+        }
+        tr.active {
+          background: rgba(255,215,0,0.15);
+        }
+        .numbers {
+          display: flex;
+          gap: 10px;
+          flex-wrap: wrap;
+        }
+        .number-box {
+          padding: 8px 14px;
+          background: #222;
+          border-radius: 6px;
+          font-weight: bold;
+          letter-spacing: 2px;
+        }
+        .rolling {
+          background: #ff5722;
+          animation: pulse 0.3s infinite alternate;
+        }
+        @keyframes pulse {
+          from { transform: scale(1); }
+          to { transform: scale(1.1); }
+        }
+        button {
+          margin-top: 25px;
+          padding: 12px 30px;
+          font-size: 16px;
+          cursor: pointer;
+          border: none;
+          border-radius: 8px;
+          background: gold;
+          font-weight: bold;
+        }
+        button:disabled {
+          opacity: 0.6;
+          cursor: not-allowed;
+        }
