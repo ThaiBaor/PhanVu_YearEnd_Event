@@ -22,6 +22,7 @@ const saveUsedNumber = (number) => {
   }
 };
 export default function LotteryPage() {
+  // eslint-disable-next-line no-unused-vars
   const [prizes, setPrizes] = useState([
     {
       key: 4,
