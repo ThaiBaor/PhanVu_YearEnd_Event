@@ -42,9 +42,9 @@ const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin }) => {
       style={{
         width: 70,
         height: 50,
-        backgroundColor: '#111',
+        backgroundColor: '#173182',
         borderRadius: '8px',
-        border: `3px solid ${status === 'spinning' ? '#e11414' : status === 'fixed' ? 'yellow' : '#333'}`,
+        border: `3px solid ${status === 'spinning' ? '#d2acac' : status === 'fixed' ? 'white' : '#333'}`,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
@@ -58,10 +58,10 @@ const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin }) => {
           fontWeight: 'bold',
           color:
             status === 'spinning'
-              ? '#fff'
+              ? '#f3a6a6'
               : status === 'fixed'
-                ? 'yellow'
-                : '#444',
+                ? 'white'
+                : '#e0d9d9',
         }}>
         {displayValue}
       </span>
