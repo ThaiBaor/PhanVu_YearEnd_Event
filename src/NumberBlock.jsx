@@ -1,12 +1,8 @@
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect } from 'react';
 const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin }) => {
   const [displayValue, setDisplayValue] = useState('---');
   const [status, setStatus] = useState('idle');
-  const audioRef = useRef(null);
 
-  useEffect(() => {
-    audioRef.current = new Audio('/sounds/stop.mp3');
-  }, []);
 
   useEffect(() => {
     let spinInterval;
@@ -30,10 +26,6 @@ const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin }) => {
           clearInterval(spinInterval);
           setStatus('fixed');
           setDisplayValue(targetNumber.toString().padStart(3, '0'));
-          if (audioRef.current) {
-            audioRef.current.currentTime = 0;
-            audioRef.current.play().catch(() => {});
-          }
         }, 6000);
       }, regionDelay);
     }
@@ -52,7 +44,7 @@ const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin }) => {
         height: 50,
         backgroundColor: '#111',
         borderRadius: '8px',
-        border: `3px solid ${status === 'spinning' ? '#00fbff' : status === 'fixed' ? 'yellow' : '#333'}`,
+        border: `3px solid ${status === 'spinning' ? '#e11414' : status === 'fixed' ? 'yellow' : '#333'}`,
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',

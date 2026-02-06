@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
 import NumberBlock from './NumberBlock';
+import logo1 from './logo1.png';
+import logo2 from './logo2.png';
+
 const REGION_RANGES = {
-  MN: { min: 1, max: 200 },
-  MT: { min: 201, max: 300 },
-  MB: { min: 301, max: 400 },
+  MN: { min: 200, max: 395 },
+  MT: { min: 1, max: 55 },
+  MB: { min: 100, max: 180 },
 };
 const STORAGE_KEY = 'lottery_used_numbers';
 
@@ -29,9 +32,9 @@ export default function LotteryPage() {
       name: 'Giải Khuyến Khích',
       detail: [
         {
-          key: 'MN',
-          region: 'Miền Nam',
-          count: 5,
+          key: 'MB',
+          region: 'Miền Bắc',
+          count: 3,
           value: [],
         },
         {
@@ -41,9 +44,9 @@ export default function LotteryPage() {
           value: [],
         },
         {
-          key: 'MB',
-          region: 'Miền Bắc',
-          count: 3,
+          key: 'MN',
+          region: 'Miền Nam',
+          count: 5,
           value: [],
         },
       ],
@@ -53,21 +56,21 @@ export default function LotteryPage() {
       name: 'Giải Ba',
       detail: [
         {
-          key: 'MN',
-          region: 'Miền Nam',
-          count: 3,
+          key: 'MB',
+          region: 'Miền Bắc',
+          count: 2,
           value: [],
         },
         {
           key: 'MT',
           region: 'Miền Trung',
-          count: 1,
+          count: 2,
           value: [],
         },
         {
-          key: 'MB',
-          region: 'Miền Bắc',
-          count: 2,
+          key: 'MN',
+          region: 'Miền Nam',
+          count: 3,
           value: [],
         },
       ],
@@ -77,9 +80,9 @@ export default function LotteryPage() {
       name: 'Giải Nhì',
       detail: [
         {
-          key: 'MN',
-          region: 'Miền Nam',
-          count: 3,
+          key: 'MB',
+          region: 'Miền Bắc',
+          count: 2,
           value: [],
         },
         {
@@ -89,9 +92,9 @@ export default function LotteryPage() {
           value: [],
         },
         {
-          key: 'MB',
-          region: 'Miền Bắc',
-          count: 2,
+          key: 'MN',
+          region: 'Miền Nam',
+          count: 3,
           value: [],
         },
       ],
@@ -101,8 +104,8 @@ export default function LotteryPage() {
       name: 'Giải Nhất',
       detail: [
         {
-          key: 'MN',
-          region: 'Miền Nam',
+          key: 'MB',
+          region: 'Miền Bắc',
           count: 1,
           value: [],
         },
@@ -113,8 +116,8 @@ export default function LotteryPage() {
           value: [],
         },
         {
-          key: 'MB',
-          region: 'Miền Bắc',
+          key: 'MN',
+          region: 'Miền Nam',
           count: 1,
           value: [],
         },
@@ -200,37 +203,70 @@ export default function LotteryPage() {
   };
   return (
     <div className="background">
-      <div style={{ marginTop: 60, height: 100 }}>
-        <h1>XỔ SỐ KIẾN THIẾT PHAN VŨ</h1>
+      <div
+        style={{
+          marginTop: 40,
+          height: 100,
+          display: 'flex',
+          justifyContent: 'space-evenly',
+          alignContent: 'center',
+        }}>
+        <div style={{ width: 140, height: 140 }}>
+          <img
+            src={logo2}
+            width={140}
+            height={140}></img>
+        </div>
+        <h1 style={{ fontSize: 60, color: 'blue' }}>
+          XỔ SỐ KIẾN THIẾT PHAN VŨ
+        </h1>
+        <div style={{ width: 160, height: 140 }}>
+          <img
+            src={logo1}
+            width={160}
+            height={140}></img>
+        </div>
       </div>
-      <div style={{ margin: 60, border: '3px black solid' }}>
-        <table style={{ backgroundColor: '#e9ecef' }}>
+      <div
+        style={{
+          margin: 60,
+          border: '3px black solid',
+          boxShadow: '0 0 10px black',
+        }}>
+        <table>
           <thead>
             <tr>
               <th
                 colSpan={2}
                 style={{
-                  border: '2px black solid',
+                  fontSize: '20px',
+                  borderBottom: '3px black solid',
+                  borderRight: '3px black solid',
                 }}>
                 GIẢI
               </th>
               <th
                 style={{
-                  border: '2px black solid',
+                  fontSize: '20px',
+                  borderBottom: '3px black solid',
+                  borderRight: '3px black solid',
                 }}>
-                PV MIỀN NAM
+                PHAN VŨ M.BẮC
               </th>
               <th
                 style={{
-                  border: '2px black solid',
+                  fontSize: '20px',
+                  borderBottom: '3px black solid',
+                  borderRight: '3px black solid',
                 }}>
-                PV MIỀN TRUNG
+                PHAN VŨ M.TRUNG
               </th>
               <th
                 style={{
-                  border: '2px black solid',
+                  fontSize: '20px',
+                  borderBottom: '3px black solid',
                 }}>
-                PV MIỀN BẮC
+                PHAN VŨ M.NAM
               </th>
             </tr>
           </thead>
@@ -259,39 +295,48 @@ export default function LotteryPage() {
               return (
                 <tr
                   key={p.key}
-                  style={{
-                    opacity: isLocked ? 0.5 : 1,
-                    border: '2px black solid',
-                  }}>
-                  <td style={{ border: '2px black solid' }}>
+                  style={
+                    {
+                      //opacity: isLocked ? 0.5 : 1,
+                    }
+                  }>
+                  <td>
                     {!isFinished && !isLocked && (
-                      <button
-                        onClick={() => handleNextSpin(p.key)}
+                      <div
                         style={{
-                          padding: '8px 16px',
-                          cursor: isFinished ? 'not-allowed' : 'pointer',
-                          backgroundColor: isFinished ? '#666' : '#28a745',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '4px',
+                          display: 'flex',
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}>
-                        {currentStep === 0 ? `Bắt đầu` : 'Quay tiếp'}
-                      </button>
+                        <button
+                          onClick={() => handleNextSpin(p.key)}
+                          style={{
+                            cursor: isFinished ? 'not-allowed' : 'pointer',
+                            backgroundColor: isFinished ? '#666' : '#28a745',
+                            color: 'white',
+                            border: 'none',
+                            borderRadius: '4px',
+                          }}>
+                          {currentStep === 0 ? `Bắt đầu` : 'Quay tiếp'}
+                        </button>
+                      </div>
                     )}
                   </td>
 
                   {/* Tên giải */}
-                  <td style={{ fontWeight: 'bold', border: '2px black solid' }}>
-                    <span style={{ color: isLocked ? 'black' : 'red' }}>
+                  <td style={{ fontWeight: 'bold' }}>
+                    <span
+                      style={{
+                        color: isLocked ? 'black' : 'red',
+                        fontSize: (index + 8) * 2,
+                      }}>
                       {p.name}
                     </span>
                   </td>
 
                   {/* Các cột số Miền Nam, Trung, Bắc giữ nguyên... */}
                   {p.detail.map((region) => (
-                    <td
-                      key={region.key}
-                      style={{ border: '2px black solid' }}>
+                    <td key={region.key}>
                       <div
                         style={{ display: 'flex', justifyContent: 'center' }}>
                         {Array.from({ length: region.count }).map((_, i) => (
