@@ -213,6 +213,7 @@ export default function LotteryPage() {
         }}>
         <div style={{ width: 140, height: 140 }}>
           <img
+            alt="logo2"
             src={logo2}
             width={140}
             height={140}></img>
@@ -222,6 +223,7 @@ export default function LotteryPage() {
         </h1>
         <div style={{ width: 160, height: 140 }}>
           <img
+            alt="logo1"
             src={logo1}
             width={160}
             height={140}></img>
