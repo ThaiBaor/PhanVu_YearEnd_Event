@@ -40,7 +40,7 @@ export default function LotteryPage() {
         {
           key: 'MT',
           region: 'Miền Trung',
-          count: 2,
+          count: 3,
           value: [],
         },
         {
