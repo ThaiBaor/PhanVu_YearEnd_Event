@@ -3,10 +3,11 @@ import NumberBlock from './NumberBlock';
 import logo1 from './logo1.png';
 import logo2 from './logo2.png';
 
+// Định nghĩa khoảng số cho từng nhóm theo yêu cầu mới
 const REGION_RANGES = {
-  MN: { min: 200, max: 395 },
-  MT: { min: 1, max: 55 },
-  MB: { min: 100, max: 180 },
+  MN: { min: 1, max: 450 },
+  MB: { min: 451, max: 700 },
+  ALL: { min: 1, max: 700 }, // Dùng cho các giải không phân biệt vùng miền
 };
 const STORAGE_KEY = 'lottery_used_numbers';
 
@@ -24,108 +25,71 @@ const saveUsedNumber = (number) => {
     localStorage.setItem(STORAGE_KEY, JSON.stringify(used));
   }
 };
+
 export default function LotteryPage() {
-  // eslint-disable-next-line no-unused-vars
-  const [prizes, setPrizes] = useState([
+  // Cấu hình 5 nhóm giải với tổng cộng 20 giải khuyến khích (chia 2 lần quay) và các giải còn lại
+  const [prizes] = useState([
     {
-      key: 4,
-      name: 'Giải Khuyến Khích',
-      detail: [
-        {
-          key: 'MB',
-          region: 'Miền Bắc',
-          count: 3,
-          value: [],
-        },
-        {
-          key: 'MT',
-          region: 'Miền Trung',
-          count: 3,
-          value: [],
-        },
-        {
-          key: 'MN',
-          region: 'Miền Nam',
-          count: 5,
-          value: [],
-        },
+      key: 'kk_1',
+      name: 'Giải Khuyến Khích (Lần 1)',
+      slots: [
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MB' },
+        { region: 'MB' },
+        { region: 'MB' },
       ],
     },
     {
-      key: 3,
+      key: 'kk_2',
+      name: 'Giải Khuyến Khích (Lần 2)',
+      slots: [
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MB' },
+        { region: 'MB' },
+      ],
+    },
+    {
+      key: 'g_ba',
       name: 'Giải Ba',
-      detail: [
-        {
-          key: 'MB',
-          region: 'Miền Bắc',
-          count: 2,
-          value: [],
-        },
-        {
-          key: 'MT',
-          region: 'Miền Trung',
-          count: 2,
-          value: [],
-        },
-        {
-          key: 'MN',
-          region: 'Miền Nam',
-          count: 3,
-          value: [],
-        },
+      slots: [
+        { region: 'ALL' },
+        { region: 'ALL' },
+        { region: 'ALL' },
+        { region: 'ALL' },
       ],
     },
     {
-      key: 2,
+      key: 'g_nhi',
       name: 'Giải Nhì',
-      detail: [
-        {
-          key: 'MB',
-          region: 'Miền Bắc',
-          count: 2,
-          value: [],
-        },
-        {
-          key: 'MT',
-          region: 'Miền Trung',
-          count: 1,
-          value: [],
-        },
-        {
-          key: 'MN',
-          region: 'Miền Nam',
-          count: 3,
-          value: [],
-        },
-      ],
+      slots: [{ region: 'ALL' }, { region: 'ALL' }, { region: 'ALL' }],
     },
     {
-      key: 1,
+      key: 'g_nhat',
       name: 'Giải Nhất',
-      detail: [
-        {
-          key: 'MB',
-          region: 'Miền Bắc',
-          count: 1,
-          value: [],
-        },
-        {
-          key: 'MT',
-          region: 'Miền Trung',
-          count: 1,
-          value: [],
-        },
-        {
-          key: 'MN',
-          region: 'Miền Nam',
-          count: 1,
-          value: [],
-        },
-      ],
+      slots: [{ region: 'ALL' }, { region: 'ALL' }],
     },
-  ]); // Data của bạn
+    {
+      key: 'g_dacbiet',
+      name: 'Giải Đặc Biệt',
+      slots: [{ region: 'ALL' }],
+    },
+  ]);
+
   const [results, setResults] = useState({});
-  // Lưu bước hiện tại cho từng giải. Ví dụ: { "1": 0 } (Giải Nhất đang ở ô đầu tiên)
+  // Lưu trạng thái xem giải nào đã được kích hoạt quay bấm nút: { [prizeKey]: true }
   const [activeSteps, setActiveSteps] = useState({});
 
   // Hàm tạo số ngẫu nhiên không trùng lặp
@@ -133,7 +97,7 @@ export default function LotteryPage() {
     const { min, max } = REGION_RANGES[regionKey];
     const used = getUsedNumbers();
 
-    // Tạo danh sách các số khả dụng trong khoảng của miền đó
+    // Tạo danh sách các số khả dụng trong khoảng
     const available = [];
     for (let i = min; i <= max; i++) {
       if (!used.includes(i)) {
@@ -142,7 +106,7 @@ export default function LotteryPage() {
     }
 
     if (available.length === 0) {
-      alert(`Đã hết số khả dụng cho ${regionKey}!`);
+      alert(`Đã hết số khả dụng cho nhóm miền ${regionKey}!`);
       return 0;
     }
 
@@ -150,57 +114,50 @@ export default function LotteryPage() {
     const randomIndex = Math.floor(Math.random() * available.length);
     const luckyNumber = available[randomIndex];
 
-    // Lưu ngay vào localStorage để các ô quay sau không lấy trùng
+    // Lưu trực tiếp vào localStorage ngay lập tức
     saveUsedNumber(luckyNumber);
     return luckyNumber;
   };
 
+  // Quay toàn bộ các ô số của giải được chọn cùng lúc
   const handleNextSpin = (prizeKey) => {
     const prize = prizes.find((p) => p.key === prizeKey);
-    const currentStep = activeSteps[prizeKey] ?? 0;
-
-    // 1. Tạo số cho các ô ở lượt quay này (Vị trí currentStep của các miền)
     const newResults = { ...results };
-    prize.detail.forEach((region) => {
-      if (region.count > currentStep) {
-        const id = `${prizeKey}-${region.key}`;
-        const currentList = [...(newResults[id] || [])];
-        // Nếu ô chưa có số, khởi tạo mảng
-        if (currentList.length === 0) {
-          for (let j = 0; j < region.count; j++) currentList.push(0);
-        }
-        currentList[currentStep] = generateUniqueRandom(region.key);
-        newResults[id] = currentList;
-      }
+
+    // Khởi tạo mảng số trúng cho giải hiện tại nếu chưa có
+    const currentList = Array(prize.slots.length).fill(0);
+
+    const updatedList = currentList.map((_, index) => {
+      return generateUniqueRandom(prize.slots[index].region);
     });
 
+    newResults[prizeKey] = updatedList;
     setResults(newResults);
 
-    // 2. Kích hoạt trạng thái quay cho bước này
-    setActiveSteps((prev) => ({ ...prev, [prizeKey]: currentStep + 1 }));
+    // Kích hoạt hiệu ứng quay số cho giải này
+    setActiveSteps((prev) => ({ ...prev, [prizeKey]: true }));
   };
-  const spinSingle = (prizeKey, regionKey, index) => {
-    // 1. Xác định ID của nhóm ô số (ví dụ: "4-MN")
-    const id = `${prizeKey}-${regionKey}`;
 
-    // 2. Lấy danh sách số hiện tại của nhóm đó
-    const currentList = [...(results[id] || [])];
+  // Quay lại một ô đơn lẻ khi click vào ô đó (nếu cần thiết)
+  const spinSingle = (prizeKey, index) => {
+    // Chỉ cho phép quay đơn lẻ nếu giải đó đã được kích hoạt tổng thể trước đó
+    if (!activeSteps[prizeKey]) return;
 
-    // 4. Tạo một số mới ngẫu nhiên, không trùng và đúng dải số miền
-    // Hàm generateUniqueRandom đã bao gồm việc lưu số mới vào localStorage
+    const prize = prizes.find((p) => p.key === prizeKey);
+    const currentList = [...(results[prizeKey] || [])];
+
+    const regionKey = prize.slots[index].region;
     const newLuckyNumber = generateUniqueRandom(regionKey);
 
     if (newLuckyNumber !== 0) {
-      // 5. Cập nhật vào mảng kết quả tại đúng vị trí index
       currentList[index] = newLuckyNumber;
-
-      // 6. Cập nhật State để hiển thị lên màn hình
       setResults((prev) => ({
         ...prev,
-        [id]: currentList,
+        [prizeKey]: currentList,
       }));
     }
   };
+
   return (
     <div className="background">
       <div
@@ -216,80 +173,70 @@ export default function LotteryPage() {
             alt="logo2"
             src={logo2}
             width={140}
-            height={140}></img>
+            height={140}
+          />
         </div>
         <h1 style={{ fontSize: 60, color: 'blue' }}>
-          XỔ SỐ KIẾN THIẾT PHAN VŨ
+          QUAY SỐ TRÚNG THƯỞNG KỈ NIỆM 30 NĂM
         </h1>
         <div style={{ width: 160, height: 140 }}>
           <img
             alt="logo1"
             src={logo1}
             width={160}
-            height={140}></img>
+            height={140}
+          />
         </div>
       </div>
+
       <div
         style={{
           margin: 60,
           border: '3px black solid',
           boxShadow: '0 0 10px black',
+          backgroundColor: '#fff',
         }}>
-        <table>
+        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
           <thead>
-            <tr>
+            <tr style={{ backgroundColor: '#f2f2f2' }}>
               <th
-                colSpan={2}
                 style={{
                   fontSize: '20px',
                   borderBottom: '3px black solid',
                   borderRight: '3px black solid',
+                  padding: '12px',
+                  width: '150px',
                 }}>
-                GIẢI
               </th>
               <th
                 style={{
                   fontSize: '20px',
                   borderBottom: '3px black solid',
                   borderRight: '3px black solid',
+                  padding: '12px',
+                  width: '280px',
                 }}>
-                PHAN VŨ M.BẮC
+                GIẢI THƯỞNG
               </th>
               <th
                 style={{
                   fontSize: '20px',
                   borderBottom: '3px black solid',
-                  borderRight: '3px black solid',
+                  padding: '12px',
                 }}>
-                PHAN VŨ M.TRUNG
-              </th>
-              <th
-                style={{
-                  fontSize: '20px',
-                  borderBottom: '3px black solid',
-                }}>
-                PHAN VŨ M.NAM
+                Ô TRÚNG THƯỞNG
               </th>
             </tr>
           </thead>
           <tbody>
             {prizes.map((p, index) => {
-              // 1. Tính toán trạng thái giải hiện tại
-              const currentStep = activeSteps[p.key] ?? 0;
-              const maxCount = Math.max(...p.detail.map((d) => d.count));
-              const isFinished = currentStep >= maxCount;
+              const isFinished = !!activeSteps[p.key];
 
-              // 2. KIỂM TRA GIẢI TRƯỚC ĐÓ ĐÃ XONG CHƯA
+              // Kiểm tra tuần tự: Khóa giải dưới nếu giải phía trên chưa được bấm quay thưởng[cite: 1]
               let isLocked = false;
               if (index > 0) {
                 const previousPrize = prizes[index - 1];
-                const prevMaxCount = Math.max(
-                  ...previousPrize.detail.map((d) => d.count),
-                );
-                const prevCurrentStep = activeSteps[previousPrize.key] ?? 0;
-
-                // Nếu giải trước chưa quay hết số thì giải này bị khóa
-                if (prevCurrentStep < prevMaxCount) {
+                if (!activeSteps[previousPrize.key]) {
                   isLocked = true;
                 }
               }
@@ -297,64 +244,84 @@ export default function LotteryPage() {
               return (
                 <tr
                   key={p.key}
-                  style={
-                    {
-                      //opacity: isLocked ? 0.5 : 1,
-                    }
-                  }>
-                  <td>
+                  style={{
+                    opacity: isLocked ? 0.4 : 1,
+                    borderBottom: '1px solid #ddd',
+                  }}>
+                  {/* Cột nút bấm hành động */}
+                  <td
+                    style={{
+                      borderRight: '3px black solid',
+                      padding: '15px',
+                      textAlign: 'center',
+                    }}>
                     {!isFinished && !isLocked && (
-                      <div
+                      <button
+                        onClick={() => handleNextSpin(p.key)}
                         style={{
-                          display: 'flex',
-                          justifyContent: 'center',
-                          alignItems: 'center',
+                          cursor: 'pointer',
+                          backgroundColor: '#28a745',
+                          color: 'white',
+                          border: 'none',
+                          borderRadius: '4px',
+                          padding: '10px 18px',
+                          fontSize: '16px',
+                          fontWeight: 'bold',
                         }}>
-                        <button
-                          onClick={() => handleNextSpin(p.key)}
-                          style={{
-                            cursor: isFinished ? 'not-allowed' : 'pointer',
-                            backgroundColor: isFinished ? '#666' : '#28a745',
-                            color: 'white',
-                            border: 'none',
-                            borderRadius: '4px',
-                          }}>
-                          {currentStep === 0 ? `Bắt đầu` : 'Quay tiếp'}
-                        </button>
-                      </div>
+                        Bắt đầu
+                      </button>
+                    )}
+                    {isFinished && (
+                      <span
+                        style={{
+                          color: '#28a745',
+                          fontWeight: 'bold',
+                          fontSize: '16px',
+                        }}>
+                        ✓ Đã quay
+                      </span>
                     )}
                   </td>
 
-                  {/* Tên giải */}
-                  <td style={{ fontWeight: 'bold' }}>
+                  {/* Cột tên giải thưởng */}
+                  <td
+                    style={{
+                      fontWeight: 'bold',
+                      borderRight: '3px black solid',
+                      padding: '15px',
+                    }}>
                     <span
                       style={{
-                        color: isLocked ? 'black' : 'red',
-                        fontSize: (index + 8) * 2,
+                        color: isLocked ? 'black' : isFinished ? 'green' : 'red',
+                        fontSize: '24px',
                       }}>
                       {p.name}
                     </span>
                   </td>
 
-                  {/* Các cột số Miền Nam, Trung, Bắc giữ nguyên... */}
-                  {p.detail.map((region) => (
-                    <td key={region.key}>
-                      <div
-                        style={{ display: 'flex', justifyContent: 'center' }}>
-                        {Array.from({ length: region.count }).map((_, i) => (
+                  {/* Cột danh sách các ô số kết quả dạng inline */}
+                  <td style={{ padding: '15px' }}>
+                    <div
+                      style={{
+                        display: 'flex',
+                        flexWrap: 'wrap',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}>
+                      {p.slots.map((slot, i) => (
+                        <div
+                          key={`${p.key}-slot-${i}`}
+                          style={{ textAlign: 'center', margin: '5px' }}>
                           <NumberBlock
-                            key={`${p.key}-${region.key}-${i}`}
-                            targetNumber={
-                              results[`${p.key}-${region.key}`]?.[i] || 0
-                            }
-                            triggerSpin={activeSteps[p.key] === i + 1}
-                            regionDelay={0}
-                            onReSpin={() => spinSingle(p.key, region.key, i)}
+                            targetNumber={results[p.key]?.[i] || 0}
+                            triggerSpin={isFinished}
+                            regionDelay={i * 200} // Tạo độ trễ đuổi nhau giữa các ô[cite: 2]
+                            onReSpin={() => spinSingle(p.key, i)}
                           />
-                        ))}
-                      </div>
-                    </td>
-                  ))}
+                        </div>
+                      ))}
+                    </div>
+                  </td>
                 </tr>
               );
             })}
