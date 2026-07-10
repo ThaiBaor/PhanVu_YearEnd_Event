@@ -5,7 +5,7 @@
         }
         .background {
           position: fixed;
-          background: linear-gradient(135deg, #d7dedd, #dccca8, #92d2f3);
+          background: linear-gradient(135deg, #cae7e2, #dccca8, #92d2f3);
           inset: 0;
         }
         .container {
