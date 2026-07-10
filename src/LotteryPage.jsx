@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import NumberBlock from './NumberBlock';
 import logo1 from './logo1.png';
 import logo2 from './logo2.png';
+import banner from './banner.png';
 
 const REGION_RANGES = {
-  MN: { min: 1, max: 450 },
-  MB: { min: 451, max: 700 },
+  MN: { min: 1, max: 540 },
+  MB: { min: 541, max: 700 },
   ALL: { min: 1, max: 700 },
 };
 
-// Định nghĩa các key lưu trữ cục bộ
 const STORAGE_KEY_USED = 'lottery_used_numbers';
 const STORAGE_KEY_RESULTS = 'lottery_results';
 const STORAGE_KEY_STEPS = 'lottery_active_steps';
@@ -31,55 +31,81 @@ export default function LotteryPage() {
   const [prizes] = useState([
     {
       key: 'kk_1',
-      name: 'Giải Khuyến Khích (Lần 1)',
-      scale: 1.2,
+      mainName: 'Giải khuyến khích',
+      subName: 'Lần quay 1',
+      scale: 1,
       slowdown: false,
       slots: [
-        { region: 'MB' }, { region: 'MN' }, { region: 'MN' }, { region: 'MN' }, { region: 'MN' }, { region: 'MN' }, { region: 'MN' },
-        { region: 'MN' }, { region: 'MB' }, { region: 'MB' }
+        { region: 'MN' },
+        { region: 'MB' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MB' },
+        { region: 'MB' },
+        { region: 'MN' },
       ],
     },
     {
       key: 'kk_2',
-      name: 'Giải Khuyến Khích (Lần 2)',
-      scale: 1.2,
+      mainName: 'Giải khuyến khích',
+      subName: 'Lần quay 2',
+      scale: 1,
       slowdown: false,
       slots: [
-        { region: 'MN' }, { region: 'MB' }, { region: 'MN' }, { region: 'MN' }, { region: 'MB' }, { region: 'MN' }, { region: 'MN' }, { region: 'MN' },
-        { region: 'MN' }, { region: 'MN' }
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MB' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MN' },
+        { region: 'MB' },
       ],
     },
     {
       key: 'g_ba',
-      name: 'Giải Ba',
-      scale: 1.3,
+      mainName: 'Giải ba',
+      subName: '',
+      scale: 1,
       slowdown: false,
-      slots: [{ region: 'ALL' }, { region: 'ALL' }, { region: 'ALL' }, { region: 'ALL' }],
+      slots: [
+        { region: 'ALL' },
+        { region: 'ALL' },
+        { region: 'ALL' },
+        { region: 'ALL' },
+      ],
     },
     {
       key: 'g_nhi',
-      name: 'Giải Nhì',
-      scale: 1.5,
+      mainName: 'Giải nhì',
+      subName: '',
+      scale: 1,
       slowdown: true,
       slots: [{ region: 'ALL' }, { region: 'ALL' }, { region: 'ALL' }],
     },
     {
       key: 'g_nhat',
-      name: 'Giải Nhất',
-      scale: 1.8,
+      mainName: 'Giải nhất',
+      subName: '',
+      scale: 1,
       slowdown: true,
       slots: [{ region: 'ALL' }, { region: 'ALL' }],
     },
     {
       key: 'g_dacbiet',
-      name: 'Giải Đặc Biệt',
-      scale: 2.2,
+      mainName: 'Giải đặc biệt',
+      subName: '',
+      scale: 1,
       slowdown: true,
       slots: [{ region: 'ALL' }],
     },
   ]);
 
-  // Khởi tạo State từ LocalStorage để phòng ngừa F5
   const [results, setResults] = useState(() => {
     const saved = localStorage.getItem(STORAGE_KEY_RESULTS);
     return saved ? JSON.parse(saved) : {};
@@ -89,8 +115,7 @@ export default function LotteryPage() {
     const saved = localStorage.getItem(STORAGE_KEY_STEPS);
     if (saved) {
       const parsed = JSON.parse(saved);
-      // Nếu lỡ F5 lúc đang quay dở (spinning), ép đổi thành finished để mở khóa giải tiếp theo
-      Object.keys(parsed).forEach(k => {
+      Object.keys(parsed).forEach((k) => {
         if (parsed[k] === 'spinning') parsed[k] = 'finished';
       });
       return parsed;
@@ -98,7 +123,6 @@ export default function LotteryPage() {
     return {};
   });
 
-  // Theo dõi và tự động lưu Results, activeSteps mỗi khi chúng thay đổi
   useEffect(() => {
     localStorage.setItem(STORAGE_KEY_RESULTS, JSON.stringify(results));
   }, [results]);
@@ -144,7 +168,6 @@ export default function LotteryPage() {
     setActiveSteps((prev) => ({ ...prev, [prizeKey]: 'spinning' }));
 
     const maxSpinTime = 6000 + (prize.slots.length - 1) * 200;
-
     setTimeout(() => {
       setActiveSteps((prev) => ({ ...prev, [prizeKey]: 'finished' }));
     }, maxSpinTime);
@@ -165,9 +188,12 @@ export default function LotteryPage() {
     }
   };
 
-  // Nút xóa toàn bộ data để bắt đầu sự kiện quay lại từ đầu
   const handleResetData = () => {
-    if (window.confirm("Bạn có chắc chắn muốn xóa toàn bộ dữ liệu và làm lại từ đầu không?")) {
+    if (
+      window.confirm(
+        'Bạn có chắc chắn muốn xóa toàn bộ dữ liệu và làm lại từ đầu không?',
+      )
+    ) {
       localStorage.removeItem(STORAGE_KEY_RESULTS);
       localStorage.removeItem(STORAGE_KEY_STEPS);
       localStorage.removeItem(STORAGE_KEY_USED);
@@ -176,123 +202,299 @@ export default function LotteryPage() {
   };
 
   return (
-    <div className="background">
+    <div
+      style={{
+        position: 'relative',
+        minHeight: '100vh',
+        overflow: 'hidden',
+        display: 'flex',
+        flexDirection: 'column',
+        color: '#fff',
+        fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
+      }}>
+      {/* Background */}
       <div
         style={{
-          marginTop: 40,
-          height: 100,
+          position: 'absolute',
+          inset: 0,
+          backgroundImage: `url(${banner})`, // đổi thành đường dẫn ảnh của bạn
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+          opacity: 0.3,
+          zIndex: 0,
+        }}
+      />
+
+      {/* Lớp phủ tối giúp chữ nổi hơn */}
+      <div
+        style={{
+          position: 'absolute',
+          inset: 0,
+          background:
+            'linear-gradient(135deg, rgba(188, 196, 207, 0.35), rgba(182, 198, 241, 0.55))',
+          zIndex: 1,
+        }}
+      />
+      {/* Header */}
+      <div
+        style={{
           display: 'flex',
-          justifyContent: 'space-evenly',
-          alignContent: 'center',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          padding: '10px 40px',
+          zIndex: 2
         }}>
-        <div style={{ width: 140, height: 140 }}>
-          <img alt="logo2" src={logo2} width={140} height={140} />
+        <div
+          style={{
+            backgroundColor: '#fff',
+            borderRadius: '90px',
+            padding: '1px',
+            display: 'flex',
+            alignItems: 'center',
+            height: '120px',
+            boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+          }}>
+          <img
+            alt="logo2"
+            src={logo2}
+            height="100%"
+          />
         </div>
-        <h1 style={{ fontSize: 60, color: 'blue' }}>
-          QUAY SỐ TRÚNG THƯỞNG KỈ NIỆM 30 NĂM
-        </h1>
-        <div style={{ width: 160, height: 140 }}>
-          <img alt="logo1" src={logo1} width={160} height={140} />
+
+        <div style={{ textAlign: 'center' }}>
+          <div
+            style={{
+              fontSize: '30px',
+              color: '#1e52b3',
+              letterSpacing: '4px',
+              marginBottom: '5px',
+              fontWeight: 'bold',
+            }}>
+            LỄ KỶ NIỆM 30 NĂM THÀNH LẬP TẬP ĐOÀN PHAN VŨ
+          </div>
+          <h1
+            style={{
+              fontSize: '22px',
+              color: '#e22121',
+              margin: 8,
+              //fontFamily: 'Georgia, serif',
+              //textShadow: '0 4px 8px rgba(0,0,0,0.4)',
+            }}>
+            CHƯƠNG TRÌNH QUAY SỐ TRÚNG THƯỞNG
+          </h1>
+          <div
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              marginTop: '5px',
+            }}>
+            <div
+              style={{
+                width: '40px',
+                height: '3px',
+                backgroundColor: '#fadb5f',
+                boxShadow: '0 2px 4px rgba(0,0,0,0.5)',
+              }}></div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            //backgroundColor: '#fff',
+            borderRadius: '15px',
+            padding: '8px',
+            display: 'flex',
+            alignItems: 'center',
+            height: '120px',
+            //boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
+          }}>
+          <img
+            alt="logo1"
+            src={logo1}
+            height="100%"
+          />
         </div>
       </div>
 
+      {/* Main Container - Dọc 1 cột */}
       <div
         style={{
-          margin: 60,
-          border: '3px black solid',
-          boxShadow: '0 0 10px black',
-          backgroundColor: '#fff',
+          flex: 1,
+          maxWidth: '1400px',
+          width: '100%',
+          margin: '10px auto',
+          position: 'relative',
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '15px',
+          padding: '0 20px',
         }}>
-        <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-          <thead>
-            <tr style={{ backgroundColor: '#f2f2f2' }}>
-              <th style={{ fontSize: '20px', borderBottom: '3px black solid', borderRight: '3px black solid', padding: '12px', width: '150px' }}>
-              </th>
-              <th style={{ fontSize: '20px', borderBottom: '3px black solid', borderRight: '3px black solid', padding: '12px', width: '280px' }}>
-                GIẢI THƯỞNG
-              </th>
-              <th style={{ fontSize: '20px', borderBottom: '3px black solid', padding: '12px' }}>
-                Ô SỐ TRÚNG THƯỞNG
-              </th>
-            </tr>
-          </thead>
-          <tbody>
-            {prizes.map((p, index) => {
-              const stepStatus = activeSteps[p.key];
-              const isFinished = stepStatus === 'finished';
-              const isSpinning = stepStatus === 'spinning';
+        {/* Đường nối Timeline chạy dọc (làm sáng màu kẻ một chút) */}
+        <div
+          style={{
+            position: 'absolute',
+            top: '35px',
+            bottom: '35px',
+            left: '42px',
+            width: '2px',
+            backgroundColor: '#3c66a3',
+            zIndex: 0,
+            boxShadow: '0 0 5px rgba(0,0,0,0.3)',
+          }}></div>
 
-              let isLocked = false;
-              if (index > 0) {
-                const previousPrize = prizes[index - 1];
-                if (activeSteps[previousPrize.key] !== 'finished') {
-                  isLocked = true;
-                }
-              }
+        {prizes.map((p, index) => {
+          const stepStatus = activeSteps[p.key];
+          const isFinished = stepStatus === 'finished';
+          const isSpinning = stepStatus === 'spinning';
 
-              return (
-                <tr key={p.key} style={{ opacity: isLocked ? 0.4 : 1, borderBottom: '1px solid #ddd' }}>
-                  <td style={{ borderRight: '3px black solid', padding: '15px', textAlign: 'center' }}>
-                    {!stepStatus && !isLocked && (
-                      <button
-                        onClick={() => handleNextSpin(p.key)}
-                        style={{
-                          cursor: 'pointer',
-                          backgroundColor: '#28a745',
-                          color: 'white',
-                          border: 'none',
-                          borderRadius: '4px',
-                          padding: '10px 18px',
-                          fontSize: '16px',
-                          fontWeight: 'bold',
-                        }}>
-                        Bắt đầu
-                      </button>
-                    )}
-                    {isSpinning && (
-                      <span style={{ color: '#ff9800', fontWeight: 'bold', fontSize: '16px' }}>Đang quay...</span>
-                    )}
-                    {isFinished && (
-                      <span style={{ color: '#28a745', fontWeight: 'bold', fontSize: '16px' }}>✓ Đã quay</span>
-                    )}
-                  </td>
+          let isLockedToStart = false;
+          if (index > 0) {
+            const previousPrize = prizes[index - 1];
+            if (activeSteps[previousPrize.key] !== 'finished') {
+              isLockedToStart = true;
+            }
+          }
 
-                  <td style={{ fontWeight: 'bold', borderRight: '3px black solid', padding: '15px' }}>
-                    <span style={{ color: isLocked ? 'black' : isFinished ? 'green' : 'red', fontSize: '24px' }}>
-                      {p.name}
-                    </span>
-                  </td>
+          return (
+            <div
+              key={p.key}
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                minHeight: '90px',
+                position: 'relative',
+                zIndex: 1,
+                opacity: isLockedToStart ? 0.5 : 1,
+              }}>
+              {/* Timeline (Trái) */}
+              <div
+                style={{
+                  width: '50px',
+                  display: 'flex',
+                  alignItems: 'center',
+                  paddingLeft: '30px',
+                }}>
+                <div
+                  style={{
+                    width: '26px',
+                    height: '26px',
+                    borderRadius: '50%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    backgroundColor: isFinished
+                      ? '#2e8b57'
+                      : isSpinning
+                        ? '#fadb5f'
+                        : '#142a54',
+                    border: isFinished
+                      ? 'none'
+                      : isSpinning
+                        ? '2px solid #fff'
+                        : '2px solid #4a77b5',
+                    marginRight: '12px',
+                    zIndex: 2,
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.4)',
+                  }}>
+                  {isFinished && (
+                    <span style={{ color: '#fff', fontSize: '14px' }}>✓</span>
+                  )}
+                </div>
+              </div>
+              {/* Nút bấm bên phải */}
+              <div style={{ width: '150px' }}>
+                {!stepStatus && !isLockedToStart && (
+                  <button
+                    onClick={() => handleNextSpin(p.key)}
+                    style={{
+                      cursor: 'pointer',
+                      backgroundColor: '#fadb5f',
+                      color: '#0a1631',
+                      border: 'none',
+                      borderRadius: '25px',
+                      padding: '10px 20px',
+                      fontSize: '14px',
+                      fontWeight: 'bold',
+                      boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
+                    }}>
+                    Quay
+                  </button>
+                )}
+              </div>
 
-                  <td style={{ padding: '20px 15px'}}>
-                    <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', alignItems: 'center' }}>
-                      {p.slots.map((slot, i) => (
-                        <div key={`${p.key}-slot-${i}`} style={{ textAlign: 'center', margin: `0 ${6 * p.scale}px` }} >
-                          <NumberBlock
-                            targetNumber={results[p.key]?.[i] || 0}
-                            triggerSpin={!!stepStatus} 
-                            regionDelay={i * 200}
-                            onReSpin={() => spinSingle(p.key, i)}
-                            scale={p.scale}
-                            slowdownEffect={p.slowdown}
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </td>
-                </tr>
-              );
-            })}
-          </tbody>
-        </table>
+              {/* Tên giải */}
+              <div
+                style={{
+                  width: '300px',
+                  paddingRight: '20px',
+                  marginRight: '20px',
+                }}>
+                <div
+                  style={{
+                    fontSize: '20px',
+                    fontWeight: 'bold',
+                    color: '#de1818',
+                    marginBottom: '4px',
+                    textShadow: '0 2px 4px rgba(202, 116, 116, 0.4)',
+                  }}>
+                  {p.mainName.toLocaleUpperCase()}
+                </div>
+                {p.subName && (
+                  <div style={{ fontSize: '13px', color: '#0f376e' }}>
+                    {p.subName}
+                  </div>
+                )}
+              </div>
+
+              {/* Vùng chứa ô số */}
+              <div
+                style={{
+                  flex: 1,
+                  display: 'flex',
+                  flexWrap: 'nowrap',
+                  gap: '12px',
+                  alignItems: 'center',
+                  //justifyContent: 'center',
+                }}>
+                {p.slots.map((slot, i) => (
+                  <div
+                    key={`${p.key}-slot-${i}`}
+                    style={{
+                      position: 'relative',
+                      marginTop: slot.region !== 'ALL' ? '12px' : '0',
+                    }}>
+                    <NumberBlock
+                      targetNumber={results[p.key]?.[i] || 0}
+                      triggerSpin={!!stepStatus}
+                      regionDelay={i * 200}
+                      onReSpin={() => spinSingle(p.key, i)}
+                      scale={p.scale}
+                      slowdownEffect={p.slowdown}
+                    />
+                  </div>
+                ))}
+              </div>
+            </div>
+          );
+        })}
       </div>
-      
-      {/* Nút reset tiện ích (nếu quay xong hoàn toàn muốn làm lại từ đầu) */}
-      <div style={{ textAlign: 'right', margin: '20px 20px 50px 0' }}>
-         <button 
-           onClick={handleResetData}
-           style={{ backgroundColor: '#dc3545', color: 'white', border: 'none', padding: '10px 20px', borderRadius: '4px', cursor: 'pointer', fontSize: '14px' }}>
-           Làm mới lại toàn bộ
-         </button>
+
+      {/* Footer Reset Data */}
+      <div style={{ textAlign: 'center', padding: '10px 0 20px 0' ,zIndex: 3}}>
+        <button
+          onClick={handleResetData}
+          style={{
+            backgroundColor: 'rgba(0,0,0,0.2)',
+            //border: '1px solid #4a77b5',
+            //color: '#b0ccf2',
+            padding: '6px 12px',
+            borderRadius: '4px',
+            cursor: 'pointer',
+            fontSize: '12px',
+          }}>
+          
+        </button>
       </div>
     </div>
   );
