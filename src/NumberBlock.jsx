@@ -83,7 +83,7 @@ const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin, scale =
   const getBorder = (status) => {
     // Sáng lên và sắc nét hơn cho viền nhạt lúc idle
     if (status === 'idle') return `${1.5 * scale}px dashed #4a77b5`; 
-    return `${1.5 * scale}px solid ${status === 'spinning' ? '#e8c837' : '#1f1d1d'} `; 
+    return `${1.5 * scale}px solid ${status === 'spinning' ? '#e92825' : '#1f1d1d'} `; 
   };
 
   return (
@@ -109,7 +109,7 @@ const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin, scale =
           fontSize: 24 * scale,
           fontWeight: 'bold',
           letterSpacing: '1px',
-          color: status === 'spinning' ? '#e8c837' : '#120b93', 
+          color: status === 'spinning' ? '#e92825' : '#120b93', 
           //textShadow: status === 'idle' ? 'none' : '0 0 8px rgba(109, 106, 94, 0.5)' // Số có hiệu ứng phát sáng lấp lánh nhẹ
         }}>
         {status === 'idle' ? '' : displayValue}
