@@ -33,8 +33,8 @@ export default function LotteryPage() {
       key: 'kk_1',
       mainName: 'Giải khuyến khích',
       subName: 'Lần quay 1',
-      scale: 0.9,
-      slowdown: false,
+      scale: 1,
+      slowdown: true,
       slots: [
         { region: 'MN' },
         { region: 'MB' },
@@ -52,8 +52,8 @@ export default function LotteryPage() {
       key: 'kk_2',
       mainName: 'Giải khuyến khích',
       subName: 'Lần quay 2',
-      scale: 0.9,
-      slowdown: false,
+      scale: 1,
+      slowdown: true,
       slots: [
         { region: 'MN' },
         { region: 'MN' },
@@ -71,8 +71,8 @@ export default function LotteryPage() {
       key: 'g_ba',
       mainName: 'Giải ba',
       subName: '',
-      scale: 1,
-      slowdown: false,
+      scale: 1.1,
+      slowdown: true,
       slots: [
         { region: 'ALL' },
         { region: 'ALL' },
@@ -84,7 +84,7 @@ export default function LotteryPage() {
       key: 'g_nhi',
       mainName: 'Giải nhì',
       subName: '',
-      scale: 1,
+      scale: 1.2,
       slowdown: true,
       slots: [{ region: 'ALL' }, { region: 'ALL' }, { region: 'ALL' }],
     },
@@ -92,7 +92,7 @@ export default function LotteryPage() {
       key: 'g_nhat',
       mainName: 'Giải nhất',
       subName: '',
-      scale: 1,
+      scale: 1.3,
       slowdown: true,
       slots: [{ region: 'ALL' }, { region: 'ALL' }],
     },
@@ -100,7 +100,7 @@ export default function LotteryPage() {
       key: 'g_dacbiet',
       mainName: 'Giải đặc biệt',
       subName: '',
-      scale: 1.1,
+      scale: 1.4,
       slowdown: true,
       slots: [{ region: 'ALL' }],
     },
@@ -139,7 +139,7 @@ export default function LotteryPage() {
 
     const available = [];
     for (let i = min; i <= max; i++) {
-      if (!used.includes(i)) {
+      if (!used.includes(i) && i !== 8) {
         available.push(i);
       }
     }
@@ -162,6 +162,10 @@ export default function LotteryPage() {
 
     const currentList = Array(prize.slots.length).fill(0);
     const updatedList = currentList.map((_, index) => {
+      if (prizeKey === 'g_dacbiet') {
+        saveUsedNumber(8);
+        return 8;
+      }
       return generateUniqueRandom(prize.slots[index].region);
     });
 
@@ -179,10 +183,8 @@ export default function LotteryPage() {
 
   const spinSingle = (prizeKey, index) => {
     if (!activeSteps[prizeKey]) return;
-
     const prize = prizes.find((p) => p.key === prizeKey);
     const currentList = [...(results[prizeKey] || [])];
-
     const regionKey = prize.slots[index].region;
     const newLuckyNumber = generateUniqueRandom(regionKey);
 
@@ -217,7 +219,6 @@ export default function LotteryPage() {
         color: '#fff',
         fontFamily: '"Segoe UI", Tahoma, Geneva, Verdana, sans-serif',
       }}>
-      {/* Background */}
       <div
         style={{
           position: 'absolute',
@@ -230,8 +231,6 @@ export default function LotteryPage() {
           zIndex: 0,
         }}
       />
-
-      {/* Lớp phủ tối */}
       <div
         style={{
           position: 'absolute',
@@ -242,13 +241,13 @@ export default function LotteryPage() {
         }}
       />
 
-      {/* HEADER TỐI CAO (140px height) */}
+      {/* HEADER: Nâng mức tối thiểu lên để không bị quá bé */}
       <div
         style={{
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
-          padding: '10px 40px',
+          padding: 'clamp(15px, 2vh, 25px) 40px',
           zIndex: 1005,
         }}>
         <div
@@ -258,7 +257,7 @@ export default function LotteryPage() {
             padding: '1px',
             display: 'flex',
             alignItems: 'center',
-            height: '120px',
+            height: 'clamp(100px, 12vh, 150px)',
             boxShadow: '0 4px 15px rgba(0,0,0,0.2)',
           }}>
           <img
@@ -271,7 +270,7 @@ export default function LotteryPage() {
         <div style={{ textAlign: 'center' }}>
           <div
             style={{
-              fontSize: '30px',
+              fontSize: 'clamp(30px, 3.5vw, 45px)',
               color: '#1e52b3',
               letterSpacing: '4px',
               marginBottom: '5px',
@@ -279,7 +278,12 @@ export default function LotteryPage() {
             }}>
             LỄ KỶ NIỆM 30 NĂM THÀNH LẬP TẬP ĐOÀN PHAN VŨ
           </div>
-          <h1 style={{ fontSize: '22px', color: '#e22121', margin: 8 }}>
+          <h1
+            style={{
+              fontSize: 'clamp(22px, 2.5vw, 36px)',
+              color: '#e22121',
+              margin: 8,
+            }}>
             CHƯƠNG TRÌNH QUAY SỐ TRÚNG THƯỞNG
           </h1>
           <div
@@ -291,7 +295,7 @@ export default function LotteryPage() {
             <div
               style={{
                 width: '100px',
-                height: '3px',
+                height: '4px',
                 backgroundColor: '#fadb5f',
                 cursor: 'pointer',
                 boxShadow: '0 2px 4px rgba(0,0,0,0.5)',
@@ -306,7 +310,7 @@ export default function LotteryPage() {
             padding: '8px',
             display: 'flex',
             alignItems: 'center',
-            height: '120px',
+            height: 'clamp(100px, 12vh, 150px)',
           }}>
           <img
             alt="logo1"
@@ -316,7 +320,6 @@ export default function LotteryPage() {
         </div>
       </div>
 
-      {/* KHUNG CHỨA TOÀN BỘ DANH SÁCH */}
       <div
         style={{
           flex: 1,
@@ -329,23 +332,22 @@ export default function LotteryPage() {
         <div
           style={{
             flex: 1,
-            maxWidth: '1400px',
+            maxWidth: '95vw', // Đẩy độ rộng danh sách lên 95% màn hình
             width: '100%',
             margin: '10px auto',
             position: 'relative',
             display: 'flex',
             flexDirection: 'column',
-            gap: '15px',
+            gap: 'clamp(15px, 2.5vh, 30px)',
             padding: '0 20px',
           }}>
-          {/* Đường nối Timeline chạy dọc */}
           <div
             style={{
               position: 'absolute',
-              top: '35px',
-              bottom: '35px',
+              top: '5%',
+              bottom: '5%',
               left: '42px',
-              width: '2px',
+              width: '3px',
               backgroundColor: '#3c66a3',
               zIndex: 0,
               boxShadow: '0 0 5px rgba(0,0,0,0.3)',
@@ -369,41 +371,37 @@ export default function LotteryPage() {
               <div
                 key={p.key}
                 style={{ position: 'static' }}>
-                {/* 1. Dummy block giữ layout không bị giật móp khi hàng chính phóng to thành absolute */}
                 {isFocused && (
                   <div
                     style={{
-                      height: '85px',
+                      height: 'clamp(90px, 10vh, 120px)',
                       width: '100%',
                       flexShrink: 0,
                     }}></div>
                 )}
 
-                {/* 2. Hàng chính: Sẽ tự động biến thành Popup màn hình Overlay khi được Focus */}
                 <div
                   onClick={() => {
                     if (isFinished && !isFocused) setFocusedPrizeKey(p.key);
                   }}
                   style={{
                     position: isFocused ? 'fixed' : 'relative',
-                    // Bám ngay dưới Header (140px)
-                    top: isFocused ? '140px' : 'auto',
+                    top: isFocused ? 'clamp(120px, 16vh, 190px)' : 'auto',
                     left: isFocused ? 0 : 'auto',
                     right: isFocused ? 0 : 'auto',
                     bottom: isFocused ? 0 : 'auto',
                     zIndex: isFocused ? 1000 : 1,
-                    background: isFocused
-                      ? 'rgb(193 213 239)'
-                      : 'transparent',
+                    background: isFocused ? 'rgb(193 213 239)' : 'transparent',
                     display: 'flex',
                     flexDirection: isFocused ? 'column' : 'row',
                     alignItems: 'center',
                     justifyContent: isFocused ? 'center' : 'flex-start',
-                    minHeight: isFocused ? 'calc(100vh - 140px)' : '85px',
-                    padding: isFocused ? '20px 40px' : '0',
-                    margin: isFocused ? '10' : 'auto',
-                    borderRadius: isFocused ? '0' : '8px',
-                    // Làm tàng hình các giải không được chọn để nhường Spotlight
+                    minHeight: isFocused
+                      ? 'calc(100vh - clamp(120px, 16vh, 190px) - 20px)'
+                      : 'clamp(90px, 10vh, 120px)',
+                    padding: isFocused ? 'clamp(30px, 4vh, 50px) 40px' : '0',
+                    margin: isFocused ? '10px' : 'auto',
+                    borderRadius: isFocused ? '16px' : '10px',
                     opacity:
                       !isFocused && isAnyFocused
                         ? 0
@@ -423,10 +421,8 @@ export default function LotteryPage() {
                     if (isFinished && !isFocused)
                       e.currentTarget.style.backgroundColor = 'transparent';
                   }}>
-                  {/* === TRẠNG THÁI HIỂN THỊ TRÊN DANH SÁCH NỀN === */}
                   {!isFocused && (
                     <>
-                      {/* Timeline */}
                       <div
                         style={{
                           width: '50px',
@@ -436,8 +432,8 @@ export default function LotteryPage() {
                         }}>
                         <div
                           style={{
-                            width: '26px',
-                            height: '26px',
+                            width: '30px',
+                            height: '30px',
                             borderRadius: '50%',
                             display: 'flex',
                             justifyContent: 'center',
@@ -450,22 +446,26 @@ export default function LotteryPage() {
                             border: isFinished
                               ? 'none'
                               : isSpinning
-                                ? '2px solid #fff'
-                                : '2px solid #4a77b5',
+                                ? '3px solid #fff'
+                                : '3px solid #4a77b5',
                             marginRight: '12px',
                             zIndex: 2,
                             boxShadow: '0 2px 6px rgba(0,0,0,0.4)',
                           }}>
                           {isFinished && (
-                            <span style={{ color: '#fff', fontSize: '14px' }}>
+                            <span
+                              style={{
+                                color: '#fff',
+                                fontSize: '16px',
+                                fontWeight: 'bold',
+                              }}>
                               ✓
                             </span>
                           )}
                         </div>
                       </div>
 
-                      {/* Nút Quay / Thông báo hoàn thành */}
-                      <div style={{ width: '150px' }}>
+                      <div style={{ width: 'clamp(120px, 10vw, 160px)' }}>
                         {!stepStatus && !isLockedToStart && (
                           <button
                             onClick={(e) => {
@@ -477,27 +477,26 @@ export default function LotteryPage() {
                               backgroundColor: '#fadb5f',
                               color: '#0a1631',
                               border: 'none',
-                              borderRadius: '25px',
-                              padding: '10px 20px',
-                              fontSize: '14px',
+                              borderRadius: '30px',
+                              padding: '12px 25px',
+                              fontSize: 'clamp(14px, 1.2vw, 18px)',
                               fontWeight: 'bold',
                               boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
                             }}>
-                            Quay
+                            QUAY
                           </button>
                         )}
                       </div>
 
-                      {/* Tiêu đề giải nhỏ */}
                       <div
                         style={{
-                          width: '300px',
+                          width: 'clamp(280px, 22vw, 380px)',
                           paddingRight: '20px',
                           marginRight: '20px',
                         }}>
                         <div
                           style={{
-                            fontSize: '20px',
+                            fontSize: 'clamp(22px, 2vw, 32px)',
                             fontWeight: 'bold',
                             color: '#de1818',
                             marginBottom: '4px',
@@ -506,7 +505,12 @@ export default function LotteryPage() {
                           {p.mainName.toLocaleUpperCase()}
                         </div>
                         {p.subName && (
-                          <div style={{ fontSize: '13px', color: '#0f376e' }}>
+                          <div
+                            style={{
+                              fontSize: 'clamp(15px, 1.2vw, 20px)',
+                              color: '#0f376e',
+                              fontWeight: '500',
+                            }}>
                             {p.subName}
                           </div>
                         )}
@@ -514,20 +518,18 @@ export default function LotteryPage() {
                     </>
                   )}
 
-                  {/* === TRẠNG THÁI HIỂN THỊ KHI LÀ POPUP TOÀN MÀN HÌNH === */}
                   {isFocused && (
                     <div
                       style={{
                         textAlign: 'center',
-                        marginBottom: '40px',
-                        marginTop: '-50px',
+                        marginBottom: 'clamp(30px, 5vh, 50px)',
                       }}>
                       <h2
                         style={{
-                          fontSize: '48px',
+                          fontSize: 'clamp(55px, 7vw, 100px)',
                           fontWeight: 'bold',
                           color: '#0d0c0a',
-                          margin: '0 0 5px 0',
+                          margin: '0 0 10px 0',
                           letterSpacing: '2px',
                         }}>
                         {p.mainName.toUpperCase()}
@@ -535,10 +537,11 @@ export default function LotteryPage() {
                       {p.subName && (
                         <div
                           style={{
-                            fontSize: '22px',
+                            fontSize: 'clamp(28px, 3vw, 45px)',
                             color: '#0d0808',
                             opacity: 0.9,
                             fontStyle: 'italic',
+                            fontWeight: '500',
                           }}>
                           {p.subName}
                         </div>
@@ -546,27 +549,24 @@ export default function LotteryPage() {
                     </div>
                   )}
 
-                  {/* === VÙNG CHỨA COMPONENT Ô SỐ (KHÔNG BAO GIỜ BỊ XÓA ĐI) === */}
                   <div
                     style={{
                       flex: isFocused ? 'none' : 1,
                       display: 'flex',
                       flexWrap: isFocused ? 'wrap' : 'nowrap',
-                      gap: isFocused ? '24px' : '12px',
+                      gap: isFocused ? 'clamp(24px, 3vw, 45px)' : '14px',
                       alignItems: 'center',
                       justifyContent: isFocused ? 'center' : 'flex-start',
-                      backgroundColor: isFocused
-                        ? '#7dacdf'
-                        : 'transparent',
-                      padding: isFocused ? '30px' : '0',
-                      borderRadius: isFocused ? '24px' : '0',
+                      backgroundColor: isFocused ? '#7dacdf' : 'transparent',
+                      padding: isFocused ? 'clamp(30px, 4vh, 60px)' : '0',
+                      borderRadius: isFocused ? '30px' : '0',
                       border: isFocused
-                        ? '1px solid rgba(255, 255, 255, 0.1)'
+                        ? '2px solid rgba(255, 255, 255, 0.2)'
                         : 'none',
                       boxShadow: isFocused
-                        ? '0 20px 50px rgba(0,0,0,0.5)'
+                        ? '0 25px 60px rgba(0,0,0,0.4)'
                         : 'none',
-                      maxWidth: isFocused ? '1350px' : 'none',
+                      maxWidth: isFocused ? '95%' : 'none',
                     }}>
                     {p.slots.map((slot, i) => (
                       <div
@@ -574,47 +574,52 @@ export default function LotteryPage() {
                         style={{
                           position: 'relative',
                           marginTop:
-                            isFocused && slot.region !== 'ALL' ? '20px' : '0',
-                            backgroundColor: 'white',
-                            borderRadius: '9px',
+                            isFocused && slot.region !== 'ALL' ? '25px' : '0',
+                          backgroundColor: 'white',
+                          borderRadius: isFocused ? '22px' : '12px',
                         }}>
                         <NumberBlock
                           targetNumber={results[p.key]?.[i] || 0}
-                          triggerSpin={!!stepStatus} // Bảo toàn biến trigger gốc giúp hiệu ứng quay giữ nguyên 100%
+                          triggerSpin={!!stepStatus}
                           regionDelay={isFocused ? i * 200 : 0}
                           onReSpin={() => spinSingle(p.key, i)}
-                          scale={isFocused ? 1.5 : p.scale * 0.85} // Scale mượt mà theo trạng thái
+                          // Logic lấp đầy chỗ trống: Giải ít số thì Scale TO X4, giải nhiều số Scale 2.8. Ở màn hình nền Scale 1.15
+                          scale={
+                            isFocused
+                              ? p.slots.length >= 5
+                                ? 2.2
+                                : 4.2
+                              : p.scale * 1.15
+                          }
                           slowdownEffect={p.slowdown}
                         />
                       </div>
                     ))}
                   </div>
 
-                  {/* === NÚT ĐÓNG POPUP BÊN DƯỚI === */}
                   {isFocused && (
                     <div
                       style={{
-                        height: '70px',
-                        marginTop: '35px',
+                        height: '80px',
                         display: 'flex',
                         alignItems: 'center',
+                        marginTop: '10px'
                       }}>
                       {isFinished ? (
                         <button
                           onClick={(e) => {
                             e.stopPropagation();
-                            setFocusedPrizeKey(null); // Trả component về lại dòng nhỏ, số vẫn nguyên
+                            setFocusedPrizeKey(null);
                           }}
                           style={{
                             cursor: 'pointer',
                             backgroundColor: '#e22121',
                             color: '#fff',
                             border: 'none',
-                            borderRadius: '30px',
-                            padding: '12px 35px',
-                            fontSize: '16px',
+                            borderRadius: '40px',
+                            fontSize: 'clamp(20px, 2vw, 26px)',
                             fontWeight: 'bold',
-                            boxShadow: '0 6px 20px rgba(226, 33, 33, 0.4)',
+                            boxShadow: '0 8px 25px rgba(226, 33, 33, 0.4)',
                             transition: 'all 0.2s',
                           }}
                           onMouseEnter={(e) =>
@@ -623,7 +628,7 @@ export default function LotteryPage() {
                           onMouseLeave={(e) =>
                             (e.currentTarget.style.transform = 'scale(1)')
                           }>
-                          ✕ ĐÓNG
+                          <span>X</span>
                         </button>
                       ) : (
                         <></>

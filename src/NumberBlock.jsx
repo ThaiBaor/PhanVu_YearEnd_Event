@@ -2,7 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 
 const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin, scale = 1, slowdownEffect = false }) => {
   const [displayValue, setDisplayValue] = useState(() => 
-    targetNumber !== 0 ? targetNumber.toString().padStart(3, '0') : '---'
+    targetNumber !== 0 ? targetNumber.toString().padStart(2, '0') : '---'
   );
   const [status, setStatus] = useState(() => 
     targetNumber !== 0 ? 'fixed' : 'idle'
@@ -37,7 +37,7 @@ const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin, scale =
 
           const elapsedTime = Date.now() - startTime;
           setDisplayValue(
-            Math.floor(Math.random() * 1000).toString().padStart(3, '0')
+            Math.floor(Math.random() * 1000).toString().padStart(2, '0') 
           );
 
           if (slowdownEffect && elapsedTime > 3000) {
@@ -57,7 +57,7 @@ const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin, scale =
           isSpinning = false;
           clearTimeout(timeoutId);
           setStatus('fixed');
-          setDisplayValue(targetNumber.toString().padStart(3, '0'));
+          setDisplayValue(targetNumber.toString().padStart(2, '0')); 
         }, totalDuration);
 
       }, delay);
@@ -81,36 +81,34 @@ const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin, scale =
   };
 
   const getBorder = (status) => {
-    // Sáng lên và sắc nét hơn cho viền nhạt lúc idle
-    if (status === 'idle') return `${1.5 * scale}px dashed #4a77b5`; 
-    return `${1.5 * scale}px solid ${status === 'spinning' ? '#e92825' : '#1f1d1d'} `; 
+    if (status === 'idle') return `${2 * scale}px dashed #4a77b5`; 
+    return `${2 * scale}px solid ${status === 'spinning' ? '#e92825' : '#1f1d1d'} `; 
   };
 
   return (
     <div
       style={{
-        width: 65 * scale,
-        height: 50 * scale,
-        // Nền tối hẳn (gần như đen) khi có số, nền mờ đục khi idle
-        //backgroundColor: status === 'idle' ? 'rgba(0, 0, 0, 0.25)' : 'rgba(0, 0, 0, 0.75)', 
-        borderRadius: `${6 * scale}px`,
+        // Tăng chiều rộng cơ sở từ 65 lên 75 để ô số dày và tràn viền đẹp hơn
+        width: 75 * scale,
+        height: 55 * scale,
+        borderRadius: `${5 * scale}px`,
         border: getBorder(status),
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         cursor: status === 'fixed' ? 'pointer' : 'default',
         transition: 'all 0.3s ease',
-        boxShadow: status === 'idle' ? 'none' : '0 4px 12px rgba(0,0,0,0.5)' // Thêm bóng đổ để ô số nổi khối 3D trên màn hình
+        boxShadow: status === 'idle' ? 'none' : '0 6px 15px rgba(0,0,0,0.5)' 
       }}>
       <span
         onClick={handleBlockClick} 
         style={{
           cursor: status === 'fixed' ? 'pointer' : 'default',
+          // Tăng font chữ cơ sở tương xứng
           fontSize: 24 * scale,
           fontWeight: 'bold',
-          letterSpacing: '1px',
+          letterSpacing: '2px',
           color: status === 'spinning' ? '#e92825' : '#120b93', 
-          //textShadow: status === 'idle' ? 'none' : '0 0 8px rgba(109, 106, 94, 0.5)' // Số có hiệu ứng phát sáng lấp lánh nhẹ
         }}>
         {status === 'idle' ? '' : displayValue}
       </span>
