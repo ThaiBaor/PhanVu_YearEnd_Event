@@ -71,7 +71,7 @@ export default function LotteryPage() {
       key: 'g_ba',
       mainName: 'Giải ba',
       subName: '',
-      scale: 2.3,
+      scale: 2.2,
       slowdown: true,
       slots: [
         { region: 'ALL' },
@@ -84,7 +84,7 @@ export default function LotteryPage() {
       key: 'g_nhi',
       mainName: 'Giải nhì',
       subName: '',
-      scale: 2.3,
+      scale: 2.2,
       slowdown: true,
       slots: [{ region: 'ALL' }, { region: 'ALL' }, { region: 'ALL' }],
     },
@@ -92,7 +92,7 @@ export default function LotteryPage() {
       key: 'g_nhat',
       mainName: 'Giải nhất',
       subName: '',
-      scale: 2.4,
+      scale: 2.2,
       slowdown: true,
       slots: [{ region: 'ALL' }, { region: 'ALL' }],
     },
@@ -100,7 +100,7 @@ export default function LotteryPage() {
       key: 'g_dacbiet',
       mainName: 'Giải đặc biệt',
       subName: '',
-      scale: 2.5,
+      scale: 2.2,
       slowdown: true,
       slots: [{ region: 'ALL' }],
     },
@@ -470,6 +470,7 @@ export default function LotteryPage() {
                           width: 'clamp(220px, 30vw, 190px)',
                           scale: 1.5,
                           marginLeft: '60px',
+                          marginRight: '5px'
                         }}>
                         {!stepStatus && !isLockedToStart && (
                           <button
@@ -609,7 +610,8 @@ export default function LotteryPage() {
                         height: '80px',
                         display: 'flex',
                         alignItems: 'center',
-                        marginTop: '10px',
+                        scale: 1.4,
+                        marginTop: '30px',
                       }}>
                       {isFinished ? (
                         <button
