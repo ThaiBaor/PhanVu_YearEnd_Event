@@ -270,7 +270,7 @@ export default function LotteryPage() {
         <div style={{ textAlign: 'center' }}>
           <div
             style={{
-              fontSize: 'clamp(50px, 4.5vw, 60px)',
+              fontSize: 'clamp(80px, 6.5vw, 70px)',
               color: '#1e52b3',
               letterSpacing: '4px',
               marginBottom: '5px',
@@ -280,7 +280,7 @@ export default function LotteryPage() {
           </div>
           <h1
             style={{
-              fontSize: 'clamp(36px, 3.1vw, 45px)',
+              fontSize: 'clamp(40px, 3.5vw, 50px)',
               color: '#e22121',
               margin: 8,
             }}>
@@ -468,7 +468,7 @@ export default function LotteryPage() {
                       <div
                         style={{
                           width: 'clamp(220px, 30vw, 190px)',
-                          scale: 1.8,
+                          scale: 1.5,
                           marginLeft: '60px',
                         }}>
                         {!stepStatus && !isLockedToStart && (
