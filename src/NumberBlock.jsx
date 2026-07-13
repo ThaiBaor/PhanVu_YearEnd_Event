@@ -28,7 +28,7 @@ const NumberBlock = ({ targetNumber, triggerSpin, regionDelay, onReSpin, scale =
         setStatus('spinning');
         isSpinning = true;
 
-        const totalDuration = 6000; 
+        const totalDuration = 10000; 
         const startTime = Date.now();
         let currentDelay = 50;
 

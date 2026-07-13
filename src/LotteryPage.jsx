@@ -33,7 +33,7 @@ export default function LotteryPage() {
       key: 'kk_1',
       mainName: 'Giải khuyến khích',
       subName: 'Lần quay 1',
-      scale: 1,
+      scale: 2.1,
       slowdown: true,
       slots: [
         { region: 'MN' },
@@ -52,7 +52,7 @@ export default function LotteryPage() {
       key: 'kk_2',
       mainName: 'Giải khuyến khích',
       subName: 'Lần quay 2',
-      scale: 1,
+      scale: 2.1,
       slowdown: true,
       slots: [
         { region: 'MN' },
@@ -71,7 +71,7 @@ export default function LotteryPage() {
       key: 'g_ba',
       mainName: 'Giải ba',
       subName: '',
-      scale: 1.1,
+      scale: 2.1,
       slowdown: true,
       slots: [
         { region: 'ALL' },
@@ -84,7 +84,7 @@ export default function LotteryPage() {
       key: 'g_nhi',
       mainName: 'Giải nhì',
       subName: '',
-      scale: 1.2,
+      scale: 2.1,
       slowdown: true,
       slots: [{ region: 'ALL' }, { region: 'ALL' }, { region: 'ALL' }],
     },
@@ -92,7 +92,7 @@ export default function LotteryPage() {
       key: 'g_nhat',
       mainName: 'Giải nhất',
       subName: '',
-      scale: 1.3,
+      scale: 2.2,
       slowdown: true,
       slots: [{ region: 'ALL' }, { region: 'ALL' }],
     },
@@ -100,7 +100,7 @@ export default function LotteryPage() {
       key: 'g_dacbiet',
       mainName: 'Giải đặc biệt',
       subName: '',
-      scale: 1.4,
+      scale: 2.3,
       slowdown: true,
       slots: [{ region: 'ALL' }],
     },
@@ -270,7 +270,7 @@ export default function LotteryPage() {
         <div style={{ textAlign: 'center' }}>
           <div
             style={{
-              fontSize: 'clamp(30px, 3.5vw, 45px)',
+              fontSize: 'clamp(50px, 4.5vw, 60px)',
               color: '#1e52b3',
               letterSpacing: '4px',
               marginBottom: '5px',
@@ -280,7 +280,7 @@ export default function LotteryPage() {
           </div>
           <h1
             style={{
-              fontSize: 'clamp(22px, 2.5vw, 36px)',
+              fontSize: 'clamp(36px, 3.1vw, 45px)',
               color: '#e22121',
               margin: 8,
             }}>
@@ -465,7 +465,7 @@ export default function LotteryPage() {
                         </div>
                       </div>
 
-                      <div style={{ width: 'clamp(120px, 10vw, 160px)' }}>
+                      <div style={{ width: 'clamp(220px, 30vw, 190px)', scale: 1.4, marginLeft: '45px' }}>
                         {!stepStatus && !isLockedToStart && (
                           <button
                             onClick={(e) => {
@@ -479,7 +479,7 @@ export default function LotteryPage() {
                               border: 'none',
                               borderRadius: '30px',
                               padding: '12px 25px',
-                              fontSize: 'clamp(14px, 1.2vw, 18px)',
+                              fontSize: 'clamp(19px, 1.6vw, 23px)',
                               fontWeight: 'bold',
                               boxShadow: '0 4px 10px rgba(0,0,0,0.4)',
                             }}>
