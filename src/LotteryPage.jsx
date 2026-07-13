@@ -465,7 +465,12 @@ export default function LotteryPage() {
                         </div>
                       </div>
 
-                      <div style={{ width: 'clamp(220px, 30vw, 190px)', scale: 1.4, marginLeft: '45px' }}>
+                      <div
+                        style={{
+                          width: 'clamp(220px, 30vw, 190px)',
+                          scale: 1.8,
+                          marginLeft: '60px',
+                        }}>
                         {!stepStatus && !isLockedToStart && (
                           <button
                             onClick={(e) => {
@@ -493,6 +498,7 @@ export default function LotteryPage() {
                           width: 'clamp(280px, 22vw, 380px)',
                           paddingRight: '20px',
                           marginRight: '20px',
+                          scale: 1.3,
                         }}>
                         <div
                           style={{
@@ -526,7 +532,7 @@ export default function LotteryPage() {
                       }}>
                       <h2
                         style={{
-                          fontSize: 'clamp(55px, 7vw, 100px)',
+                          fontSize: 'clamp(65px, 10vw, 120px)',
                           fontWeight: 'bold',
                           color: '#0d0c0a',
                           margin: '0 0 10px 0',
@@ -537,7 +543,7 @@ export default function LotteryPage() {
                       {p.subName && (
                         <div
                           style={{
-                            fontSize: 'clamp(28px, 3vw, 45px)',
+                            fontSize: 'clamp(35px, 10vw, 65px)',
                             color: '#0d0808',
                             opacity: 0.9,
                             fontStyle: 'italic',
@@ -603,7 +609,7 @@ export default function LotteryPage() {
                         height: '80px',
                         display: 'flex',
                         alignItems: 'center',
-                        marginTop: '10px'
+                        marginTop: '10px',
                       }}>
                       {isFinished ? (
                         <button
