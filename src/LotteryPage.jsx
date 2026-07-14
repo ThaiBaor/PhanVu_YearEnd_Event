@@ -5,8 +5,8 @@ import logo2 from './logo2.png';
 import banner from './banner.png';
 
 const REGION_RANGES = {
-  MN: { min: 1, max: 540 },
-  MB: { min: 541, max: 700 },
+  MN: { min: 1, max: 500 },
+  MB: { min: 501, max: 700 },
   ALL: { min: 1, max: 700 },
 };
 
